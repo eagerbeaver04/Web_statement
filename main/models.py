@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Person(models.Model):
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
@@ -41,7 +42,3 @@ class Progress(models.Model):
     attendance = models.BooleanField(max_length=100)
     mark = models.IntegerField(max_length=100)
     date = models.CharField(max_length=100)
-
-
-
-
