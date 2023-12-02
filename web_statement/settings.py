@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-from dotenv import dotenv_values
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,13 +75,12 @@ WSGI_APPLICATION = 'web_statement.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-config_set = dotenv_values(".env.set")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'web_statement',
-        'USER': config_set['USER'],
-        'PASSWORD': config_set['PASSWORD'],
+        'USER': os.environ.get('USER'),
+        'PASSWORD': os.environ.get('PASSWORD'),
         'HOST': '127.0.0.1',
         'PORT': '3310',
         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
