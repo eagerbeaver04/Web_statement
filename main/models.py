@@ -6,7 +6,7 @@ class Person(models.Model):
     lastname = models.CharField(max_length=100)
     middlename = models.CharField(max_length=100)
     gender = models.CharField(max_length=10)
-    age = models.IntegerField(max_length=100)
+    age = models.IntegerField()
     occupation = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
 
@@ -33,12 +33,12 @@ class Professor(models.Model):
 
 
 class CorrProffGrop(models.Model):
-    id_professor = models.IntegerField(max_length=100)
-    id_group = models.IntegerField(max_length=100)
+    id_professor = models.IntegerField()
+    id_group = models.IntegerField()
 
 
 class Progress(models.Model):
-    id_student = models.IntegerField(max_length=100)
-    attendance = models.BooleanField(max_length=100)
-    mark = models.IntegerField(max_length=100)
+    id_student = models.IntegerField(primary_key=True)
+    attendance = models.BooleanField()
+    mark = models.IntegerField()
     date = models.CharField(max_length=100)

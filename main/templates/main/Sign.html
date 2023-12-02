@@ -1,5 +1,6 @@
+{% load static %}
 <!DOCTYPE html>
-<html class="no-js" lang="">
+<html lang="">
 
 <head>
     <meta charset="utf-8">
@@ -24,7 +25,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <link rel="stylesheet" href="Styles/sign.css">
+    <link rel="stylesheet" href =" {% static 'main/Styles/sign.css' %}">
+    <script type="module" src="{% static 'main/js/main_sign.mjs'  %}"></script>
 </head>
 
 <body>
@@ -107,7 +109,7 @@
         </div>
         
         <script src="https://www.google-analytics.com/analytics.js" async></script>
-        <script type="module" src="js/main_sign.js"></script>
+
     </div>
 </body>
 
