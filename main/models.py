@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Person(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
     middlename = models.CharField(max_length=100)
@@ -12,33 +13,41 @@ class Person(models.Model):
 
 
 class Subject(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
     name = models.CharField(max_length=100)
 
 
 class Group(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
     number = models.CharField(max_length=100)
 
 
-class CorrSubGroup(models.Model):
-    number = models.CharField(max_length=100)
-    subject = models.CharField(max_length=100)
+class CorrSubjGroup(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
+    group = models.ForeignKey('Group', on_delete=models.PROTECT)
+    subject = models.ForeignKey('Subject', on_delete=models.PROTECT)
 
 
 class Student(models.Model):
-    group = models.CharField(max_length=100)
+    id = models.AutoField(primary_key=True, unique=True)
+    group = models.ForeignKey('Group', on_delete=models.PROTECT)
 
 
 class Professor(models.Model):
-    subject = models.CharField(max_length=100)
+    id = models.AutoField(primary_key=True, unique=True)
+    subject = models.ForeignKey('Subject', on_delete=models.PROTECT)
 
 
-class CorrProffGrop(models.Model):
-    id_professor = models.IntegerField()
-    id_group = models.IntegerField()
+class CorrProffGroup(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
+    professor = models.ForeignKey('Professor', on_delete=models.PROTECT)
+    group = models.ForeignKey('Group', on_delete=models.PROTECT)
 
 
-class Progress(models.Model):
-    id_student = models.IntegerField(primary_key=True)
+class StudentProgress(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
     attendance = models.BooleanField()
     mark = models.IntegerField()
     date = models.CharField(max_length=100)
+    subject = models.ForeignKey('Subject', on_delete=models.PROTECT)
+    student = models.ForeignKey('Student', on_delete=models.PROTECT)

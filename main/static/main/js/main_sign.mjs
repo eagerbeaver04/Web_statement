@@ -60,13 +60,7 @@ switch_to_sign_up.onclick = (e) => {
     changeWindow(sign_up_form_id);
 }
 
-const sign_buttons = document.querySelectorAll("button");
-sign_buttons.forEach((button) => {
-    button.onclick = (e) => { e.preventDefault(); 
-        submitSignForm(current_form); 
-        window.location.href = "/personal"
-    }
-})
+
 
 document.addEventListener('input', function (e) {
     if (e.target.tagName == "INPUT")

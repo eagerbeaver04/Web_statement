@@ -63,6 +63,15 @@ export const submitSignForm = (form_id) => {
     return true;
 }
 
+/*const sign_buttons = document.querySelectorAll("button");
+sign_buttons.forEach((button) => {
+button.onclick = (e) => { e.preventDefault();
+submitSignForm(current_form);
+window.location.href = "/personal"
+}
+})
+
+ */
 export const disableButton = (form_id) => {
     const button = document.querySelector("#" + form_id + " button");
     const inputs = document.querySelectorAll("#" + form_id + " input");
