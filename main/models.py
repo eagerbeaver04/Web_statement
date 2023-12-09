@@ -51,3 +51,9 @@ class StudentProgress(models.Model):
     date = models.CharField(max_length=100)
     subject = models.ForeignKey('Subject', on_delete=models.PROTECT)
     student = models.ForeignKey('Student', on_delete=models.PROTECT)
+
+
+class Account(models.Model):
+    login = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
+    user = models.OneToOneField('Person', on_delete=models.CASCADE, primary_key=True)
