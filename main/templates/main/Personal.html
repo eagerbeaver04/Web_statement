@@ -40,12 +40,12 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Personal Information</h5>
-                                        <p>Name: <span id="name">Mikhail</span></p>
-                                        <p>Surname: <span id="second-name">Markov</span></p>
-                                        <p>Middle name: <span id="middle-name">Denisovich</span></p>
-                                        <p>Age: <span id="sex">19</span></p>
-                                        <p>Gender: <span id="gender">Male</span></p>
-                                        <p>Occupation: <span id ="occupation">Student</span></p>
+                                        <p>Name: <span id="name">{{ firstname }}</span></p>
+                                        <p>Surname: <span id="second-name">{{ lastname }}</span></p>
+                                        <p>Middle name: <span id="middle-name">{{ middlename }}</span></p>
+                                        <p>Age: <span id="sex">{{ age }}</span></p>
+                                        <p>Gender: <span id="gender">{{ gender }}</span></p>
+                                        <p>Occupation: <span id ="occupation">{{ occupation }}</span></p>
                                     </div>
                                 </div>
 
@@ -67,7 +67,7 @@
                                         <p>Group number: <span id="group-number">5030102/10201</span></p>
                                         <p>Year: <span id="year">3</span></p>
                                         <p>Semester: <span id="semester">5</span></p>
-                                        <p>Status: <span id="status">Study</span></p>
+                                        <p>Status: <span id="status">{{ status }}</span></p>
                                     </div>
                                 </div>
                             </div>

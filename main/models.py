@@ -11,6 +11,10 @@ class Person(models.Model):
     occupation = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
 
+    def create_dict(self):
+        fields = Person._meta.get_fields()
+        return {field.name: getattr(self, field.name) for field in fields if not field.is_relation}
+
 
 class Subject(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
@@ -62,5 +66,3 @@ class Account(models.Model):
         if self.password == password1:
             return True
         return False
-
-

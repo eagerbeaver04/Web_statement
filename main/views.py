@@ -1,7 +1,6 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login
-
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate
+from django.contrib import messages
 
 # Create your views here.
 def main(request):
@@ -28,14 +27,10 @@ def enteruser(request):
         email = request.POST.get("email", "Undefined")
         password = request.POST.get("password", "Undefined")
 
-        # Authenticate the user using the custom backend
         user = authenticate(request, login=email, password=password)
-
         if user is not None:
-            # If authentication is successful, log the user in
-            return render(request, 'main/Personal.html')
+            return render(request, 'main/Personal.html', user.create_dict())
         else:
-            # If authentication fails, render the login page with an error message
-            error_message = "Invalid login credentials"
-            return render(request, 'main/Sign.html', {'error_message': error_message})
+            messages.error(request, "Invalid login credentials")
+            return redirect('sign')
 

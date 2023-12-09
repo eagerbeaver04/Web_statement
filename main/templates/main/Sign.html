@@ -34,6 +34,13 @@
 
     <div class="container">
         <div class="form_container row" id="sign_in_form">
+            {% if messages %}
+                <ul class="messages">
+                {% for message in messages %}
+                    <li style="color: red;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
             {% if error_message %}
                 <p style="color: red;">{{ error_message }}</p>
             {% endif %}

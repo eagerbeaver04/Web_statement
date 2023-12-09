@@ -12,7 +12,6 @@ class AccountBackend(ModelBackend):
         if account.check_password(password):
             return account.user
 
-
     def get_user(self, user_id):
         try:
             return Account.objects.get(user_id=user_id).user
