@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login
 
 
 # Create your views here.
@@ -23,8 +24,18 @@ def reguser(request):
 
 
 def enteruser(request):
-    email = request.POST.get("email", "Undefined")
-    password = request.POST.get("password", "Undefined")
-    print(email)
-    print(password)
-    return HttpResponse(f"<h2>email: {email}  password: {password}</h2>")
+    if request.method == 'POST':
+        email = request.POST.get("email", "Undefined")
+        password = request.POST.get("password", "Undefined")
+
+        # Authenticate the user using the custom backend
+        user = authenticate(request, login=email, password=password)
+
+        if user is not None:
+            # If authentication is successful, log the user in
+            return render(request, 'main/Personal.html')
+        else:
+            # If authentication fails, render the login page with an error message
+            error_message = "Invalid login credentials"
+            return render(request, 'main/Sign.html', {'error_message': error_message})
+

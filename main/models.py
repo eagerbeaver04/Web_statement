@@ -57,3 +57,10 @@ class Account(models.Model):
     login = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
     user = models.OneToOneField('Person', on_delete=models.CASCADE, primary_key=True)
+
+    def check_password(self, password1):
+        if self.password == password1:
+            return True
+        return False
+
+
