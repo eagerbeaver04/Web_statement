@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 import main.models as models
+import main.get_info as Info
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -32,9 +33,9 @@ def enteruser(request):
         email = request.POST.get("email", "Undefined")
         password = request.POST.get("password", "Undefined")
         found_user = authenticate(request, login=email, password=password)
-        print(found_user.serialize())
         if found_user is not None:
-            return render(request, 'main/Personal.html', found_user.serialize())
+            print(Info.get_student(email))
+            return render(request, 'main/Personal.html', {'Info': Info.get_student(email)})
         else:
             messages.error(request, "Invalid login credentials")
             return redirect('sign')
@@ -66,7 +67,6 @@ def user(request):
         data = json.loads(request.body.decode('utf-8'))
 
         first_name = data.get('first_name')
-        print(data)
         if not first_name:
             return HttpResponse('First name cannot be empty')
 
@@ -74,9 +74,17 @@ def user(request):
         if not last_name:
             return HttpResponse('Last name cannot be empty')
 
+        middle_name = data.get('middle_name')
+        if not middle_name:
+            return HttpResponse('Middle name cannot be empty')
+
         email = data.get('email')
         if not email:
             return HttpResponse('Email cannot be empty')
+
+        age = data.get('age')
+        if not age:
+            return HttpResponse('Age cannot be empty')
 
         password = data.get('password')
         if not password:
@@ -89,6 +97,8 @@ def user(request):
         new_user = models.User(
             first_name=first_name,
             last_name=last_name,
+            middle_name=middle_name,
+            age=age,
             email=email,
             password=password,
             role=role,
