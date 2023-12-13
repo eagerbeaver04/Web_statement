@@ -1,19 +1,19 @@
 from django.contrib.auth.backends import ModelBackend
-from main.models import Account
+from main.models import User
 
 
 class AccountBackend(ModelBackend):
     def authenticate(self, request, login=None, password=None, **kwargs):
         try:
-            account = Account.objects.get(login=login)
-        except Account.DoesNotExist:
+            account = User.objects.get(email=login)
+        except User.DoesNotExist:
             return None
 
         if account.check_password(password):
-            return account.user
+            return account
 
     def get_user(self, user_id):
         try:
-            return Account.objects.get(user_id=user_id).user
-        except Account.DoesNotExist:
+            return User.objects.get(user_id=user_id)
+        except User.DoesNotExist:
             return None

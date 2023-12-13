@@ -1,6 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
 
+
 class User(models.Model):
     class Roles(models.TextChoices):
         STUDENT = "ST"
@@ -22,9 +23,15 @@ class User(models.Model):
         default=Roles.STUDENT,
     )
 
+    def check_password(self, password):
+        if self.password == password:
+            return True
+        return False
+
     def serialize(self):
         fields = User._meta.get_fields()
         return {field.name: getattr(self, field.name) for field in fields if not field.is_relation}
+
 
 class Subject(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
@@ -33,6 +40,7 @@ class Subject(models.Model):
     def serialize(self):
         fields = Subject._meta.get_fields()
         return {field.name: getattr(self, field.name) for field in fields if not field.is_relation}
+
 
 class Group(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
@@ -43,6 +51,7 @@ class Group(models.Model):
         fields = Group._meta.get_fields()
         return {field.name: getattr(self, field.name) for field in fields if not field.is_relation}
 
+
 class Progress(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
@@ -51,9 +60,6 @@ class Progress(models.Model):
     def serialize(self):
         fields = Progress._meta.get_fields()
         return {field.name: getattr(self, field.name) for field in fields if not field.is_relation}
-
-
-
 
 #
 # class Person(models.Model):
@@ -110,7 +116,7 @@ class Progress(models.Model):
 #     subject = models.ForeignKey('Subject', on_delete=models.PROTECT)
 #     student = models.ForeignKey('Student', on_delete=models.PROTECT)
 #
-#переделать под user
+# переделать под user
 # class Account(models.Model):
 #     login = models.CharField(max_length=100)
 #     password = models.CharField(max_length=100)

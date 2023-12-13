@@ -6,6 +6,7 @@ import main.models as models
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+
 # Create your views here.
 def main(request):
     return render(request, 'main/main.html')
@@ -30,10 +31,10 @@ def enteruser(request):
     if request.method == 'POST':
         email = request.POST.get("email", "Undefined")
         password = request.POST.get("password", "Undefined")
-
-        user = authenticate(request, login=email, password=password)
-        if user is not None:
-            return render(request, 'main/Personal.html', user.create_dict())
+        found_user = authenticate(request, login=email, password=password)
+        print(found_user.serialize())
+        if found_user is not None:
+            return render(request, 'main/Personal.html', found_user.serialize())
         else:
             messages.error(request, "Invalid login credentials")
             return redirect('sign')
@@ -41,18 +42,18 @@ def enteruser(request):
 
 def createuser(request):
     user = models.User(
-        firstname='Vova',
-        lastname='Skvortsov',
-        middlename='Sergeevich',
-        email='abc@abcv.com',
-        password='A1s23_',
-        gender='Non-binary',
-        age=20,
-        role='ST',
-
+        first_name=request.POST.get("first_name", "Undefined"),
+        last_name=request.POST.get("last_name", "Undefined"),
+        middle_name=request.POST.get("middle_name", "Undefined"),
+        email=request.POST.get("email", "Undefined"),
+        password=request.POST.get("password", "Undefined"),
+        gender=request.POST.get("gender", "Undefined"),
+        age=request.POST.get("age", "Undefined"),
+        role=request.POST.get("role", "Undefined"),
     )
     user.save()
-    return JsonResponse({'foo': 'bar'})
+    return JsonResponse(user.serialize())
+
 
 @csrf_exempt
 def user(request):
@@ -99,6 +100,7 @@ def user(request):
     elif request.method == 'DELETE':
         pass
 
+
 @csrf_exempt
 def get_student_subjects(request):
     if request.method != 'GET':
@@ -138,4 +140,3 @@ def get_professor_groups(request):
             response.append(group.serialize())
 
     return JsonResponse(response, safe=False)
-
