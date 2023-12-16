@@ -1,6 +1,6 @@
 ## Locally running
 
-### Step 0. Setup environment variables 
+### Step 0. Setup environment variables in .env file
 ```
 db_user=...
 db_password=...
