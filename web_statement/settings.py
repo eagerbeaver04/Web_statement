@@ -15,6 +15,8 @@ import os
 from dotenv import load_dotenv
 import mimetypes
 
+from config import settings
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -77,11 +79,11 @@ WSGI_APPLICATION = 'web_statement.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'web_statement',
-        'USER': os.environ.get('USER'),
-        'PASSWORD': os.environ.get('PASSWORD'),
-        'HOST': '127.0.0.1',
-        'PORT': '3310',
+        'NAME': settings.db_name,
+        'USER': settings.db_user,
+        'PASSWORD': settings.db_password,
+        'HOST': settings.db_host,
+        'PORT': settings.db_port,
         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
     }
 }
