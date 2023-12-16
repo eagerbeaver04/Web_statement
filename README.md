@@ -1,6 +1,6 @@
 ## Locally running
 
-### Step 1. Setup environment variables 
+### Step 0. Setup environment variables 
 ```
 db_user=...
 db_password=...
@@ -8,6 +8,12 @@ db_name=...
 db_host=...
 db_port=...
 ```
+
+### Step 1. Install dependencies
+```shell
+pip install -r requirements.txt
+```
+
 
 ### Step 2. Update database
 ```shell
