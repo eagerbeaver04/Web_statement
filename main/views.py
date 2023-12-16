@@ -1,11 +1,14 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate
-from django.contrib import messages
-from django.http import JsonResponse, HttpResponse
-import main.models as models
-import main.get_info as Info
-from django.views.decorators.csrf import csrf_exempt
 import json
+from collections import defaultdict
+
+from django.contrib import messages
+from django.contrib.auth import authenticate
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+
+import main.get_info as Info
+import main.models as models
 
 
 # Create your views here.
@@ -54,6 +57,58 @@ def createuser(request):
     )
     user.save()
     return JsonResponse(user.serialize())
+
+
+def journal_view(request, group_id, subject_id):
+    students = models.User.objects.filter(group_id=group_id)
+    markcells = models.MarkCell.objects.filter(subject_id=subject_id)
+    student_progress = models.Progress.objects.filter(student__group_id=group_id,
+                                                      subject_id=subject_id)
+    student_progress_dict = defaultdict(dict)
+    for progress in student_progress:
+        student_progress_dict[progress.markcell_id][progress.student_id] = progress.mark
+
+    return render(request, 'main/Journal.html', {'students': students, 'markcells': markcells,
+                                                 'student_progress': student_progress,
+                                                 'student_progress_dict': student_progress_dict,
+                                                 'subject_id': subject_id})
+
+
+def create_markcell(request):
+    if request.method == 'POST':
+        date = request.POST.get('date')
+        subject_id = request.POST.get('subject_id')
+        new_markcell = models.MarkCell.objects.create(date=date, subject_id=subject_id)
+
+        return JsonResponse({'message': 'Новый MarkCell успешно создан.'})
+    return JsonResponse({'message': 'Ошибка: Метод не разрешен.'}, status=405)
+
+
+def update_grade(request):
+    if request.method == 'POST':
+        progress_id = int(request.POST.get('progress_id')) if request.POST.get(
+            'progress_id') else None
+        new_grade = request.POST.get('new_grade')
+        markcell_id = int(request.POST.get('markcell_id'))
+        student_id = int(request.POST.get('student_id'))
+        subject_id = int(request.POST.get('subject_id'))
+
+        progress, created = models.Progress.objects.get_or_create(
+            id=progress_id,
+            defaults={'mark': new_grade,
+                      "comment": "practice",
+                      "student_id": student_id,
+                      "markcell_id": markcell_id,
+                      "subject_id": subject_id}
+        )
+
+        if not created:
+            progress.mark = new_grade
+            progress.comment = "practice"
+            progress.save()
+
+        return JsonResponse({'message': 'Новый MarkCell успешно создан.'})
+    return JsonResponse({'message': 'Ошибка: Метод не разрешен.'}, status=405)
 
 
 @csrf_exempt
