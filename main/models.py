@@ -54,12 +54,22 @@ class Group(models.Model):
         return {field.name: getattr(self, field.name) for field in fields if not field.is_relation}
 
 
+class MarkCell(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
+    date = models.DateField(default=None, blank=True, null=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+
+    def serialize(self):
+        fields = MarkCell._meta.get_fields()
+        return {field.name: getattr(self, field.name) for field in fields if not field.is_relation}
+
+
 class Progress(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     comment = models.CharField(max_length=100, default=None)
     mark = models.CharField(max_length=100, default=None)
     attendance = models.BooleanField(default=False)
-    date = models.DateField(default=None)
+    markcell = models.ForeignKey(MarkCell, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
 

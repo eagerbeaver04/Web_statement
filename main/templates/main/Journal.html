@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Электронный журнал</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+    </style>
+</head>
+<body>
+<h1>Электронный журнал</h1>
+<form>
+    <label for="newMarkcell">Добавить новый слот:</label>
+    <input type="date" id="newMarkcell" name="newMarkcell">
+    <input type="submit">
+</form>
+
+<table border="1" id="markCells">
+    <thead>
+    <tr>
+        <th>Студент</th>
+        {% for markcell in markcells %}
+            <th>{{ markcell.date }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for student in students %}
+        <tr>
+            <td>{{ student.last_name }} {{ student.first_name }} {{ student.middle_name }}</td>
+            {% for markcell in markcells %}
+                <td>
+                    {% for progress in student_progress %}
+                        {% if progress.student_id == student.id and progress.markcell_id == markcell.id %}
+                            <input type="number" max="5" min="1" value="{{ progress.mark }}"
+                                   data-progress-id="{{ progress.id }}"
+                                   data-markcell-id="{{ markcell.id }}"
+                                   data-student-id=" {{ student.id }} " class="grade-input">
+                            {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('form').submit(function (event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение формы
+
+            const newDate = $('#newMarkcell').val(); // Получаем значение новой даты
+
+            $.ajax({
+                url: 'http://localhost:8000/api/create_markcell',
+                method: 'POST',
+                data: {
+                    date: newDate,
+                    subject_id: {{ subject_id }} // Передаем полученный subject_id
+                },
+                success: function (response) {
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Ошибка при создании нового слота:', error);
+                }
+            });
+        });
+
+        $(document).on('change', '.grade-input', function () {
+            const progressId = $(this).data('progress-id');
+            const studentId = $(this).data('student-id');
+            const markcellId = $(this).data('markcell-id');
+            const newGrade = $(this).val();
+
+            $.ajax({
+                url: 'http://localhost:8000/api/update_grade',
+                method: 'POST',
+                data: {
+                    progress_id: progressId,
+                    new_grade: newGrade,
+                    markcell_id: markcellId,
+                    student_id: studentId,
+                    subject_id: {{ subject_id }}
+                },
+                success: function (response) {
+                    console.log("Оценка обновлена")
+                },
+                error: function (error) {
+                    console.error('Ошибка при создании нового слота:', error);
+                }
+            })
+                .catch(error => {
+                    console.error('Ошибка сохранения оценки:', error);
+                });
+        });
+    });
+
+</script>
+</body>
+</html>
