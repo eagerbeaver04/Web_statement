@@ -9,13 +9,13 @@ class User(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     email = models.EmailField()
     password = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=100, default=None)
-    last_name = models.CharField(max_length=100, default=None)
-    middle_name = models.CharField(max_length=100, default=None)
-    gender = models.CharField(max_length=10, default=None)
+    first_name = models.CharField(max_length=100, blank=True, null=True)
+    last_name = models.CharField(max_length=100, blank=True, null=True)
+    middle_name = models.CharField(max_length=100, blank=True, null=True)
+    gender = models.CharField(max_length=10, blank=True, null=True)
     age = models.IntegerField(default=None)
-    group = models.ForeignKey('Group', on_delete=models.CASCADE, default=None)
-    subjects = models.ManyToManyField('Subject', related_name='professors')
+    group = models.ForeignKey('Group', on_delete=models.CASCADE, blank=True, null=True)
+    subjects = models.ManyToManyField('Subject', related_name='professors', default=None)
     role = models.CharField(
         max_length=100,
         choices=Roles.choices,

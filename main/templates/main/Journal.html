@@ -4,47 +4,55 @@
     <meta charset="UTF-8">
     <title>Электронный журнал</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <style>
     </style>
 </head>
 <body>
-<h1>Электронный журнал</h1>
-<form>
-    <label for="newMarkcell">Добавить новый слот:</label>
-    <input type="date" id="newMarkcell" name="newMarkcell">
-    <input type="submit">
-</form>
+<div class="container mt-5">
+        <h1 class="mb-4">Электронный журнал</h1>
+        <form class="mb-4">
+            <div class="form-group">
+                <label for="newMarkcell">Добавить новый слот:</label>
+                <div class="input-group">
+                    <input type="date" id="newMarkcell" name="newMarkcell" class="form-control">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Добавить</button>
+                    </div>
+                </div>
+            </div>
+        </form>
 
-<table border="1" id="markCells">
-    <thead>
-    <tr>
-        <th>Студент</th>
-        {% for markcell in markcells %}
-            <th>{{ markcell.date }}</th>
-        {% endfor %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for student in students %}
-        <tr>
-            <td>{{ student.last_name }} {{ student.first_name }} {{ student.middle_name }}</td>
-            {% for markcell in markcells %}
-                <td>
-                    {% for progress in student_progress %}
-                        {% if progress.student_id == student.id and progress.markcell_id == markcell.id %}
-                            <input type="number" max="5" min="1" value="{{ progress.mark }}"
-                                   data-progress-id="{{ progress.id }}"
-                                   data-markcell-id="{{ markcell.id }}"
-                                   data-student-id=" {{ student.id }} " class="grade-input">
-                            {% endif %}
+        <table class="table table-bordered" id="markCells">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Студент</th>
+                    {% for markcell in markcells %}
+                        <th>{{ markcell.date }}</th>
                     {% endfor %}
-                </td>
-            {% endfor %}
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student.last_name }} {{ student.first_name }} {{ student.middle_name }}</td>
+                        {% for markcell in markcells %}
+                            <td>
+                                {% for progress in student_progress %}
+                                    {% if progress.student_id == student.id and progress.markcell_id == markcell.id %}
+                                        <input type="number" max="5" min="1" value="{{ progress.mark }}"
+                                               data-progress-id="{{ progress.id }}"
+                                               data-markcell-id="{{ markcell.id }}"
+                                               data-student-id="{{ student.id }}" class="form-control grade-input">
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 <script>
     $(document).ready(function () {
@@ -99,5 +107,6 @@
     });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

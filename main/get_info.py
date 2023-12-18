@@ -2,7 +2,6 @@ import main.models as models
 
 
 def get_student(email):
-
     response = []
     found_user = models.User.objects.get(email=email)
 
@@ -22,3 +21,27 @@ def get_student(email):
 
     return response
 
+
+def get_professor_groups(email):
+    response = []
+    found_user = models.User.objects.get(email=email)
+
+    if found_user.role != models.User.Roles.PROFESSOR:
+        return None
+
+    subjects = found_user.subjects.all()
+    response = []
+    for subject in subjects:
+        subject_groups = subject.groups.all()
+        for group in subject_groups:
+            response.append(group.serialize())
+
+    return response
+
+
+def get_professor_group_progress(email, group):
+    response = []
+    found_user = models.User.objects.get(email=email)
+
+    if found_user.role != models.User.Roles.PROFESSOR:
+        return None
