@@ -1,3 +1,7 @@
+## Web statement
+
+This project is a website that allows you to keep track of student grades, view and edit them. Backend is implemented using the Django framework.
+
 ## Locally running
 
 ### Step 0. Setup environment variables in .env file
@@ -36,3 +40,5 @@ python manage.py makemigrations
 ```shell
 python manage.py migrate
 ```
+
+
